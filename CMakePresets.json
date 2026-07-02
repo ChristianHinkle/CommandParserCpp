@@ -1,0 +1,74 @@
+{
+    "version": 10,
+    "cmakeMinimumRequired": {
+        "major": 4,
+        "minor": 0,
+        "patch": 0
+    },
+    "$comment": [
+        "Copyright (c) 2023-2025 Christian Hinkle, Brian Hinkle.",
+        "Includes: We have includes of utility files search from the `${sourceDir}` (which is the top-level project's directory), so that it's the responsibility of the top-level project to provide these files. We do this to avoid multiple includes to duplicate files. CMake throws an error if a preset is defined twice with the same name, but it does allow duplicate includes to the same file."
+    ],
+    "include": [
+        "${sourceDir}/CMakePresets_General/CMakePresets.json"
+    ],
+    "testPresets": [
+        {
+            "name": "commandparser-base",
+            "hidden": true,
+            "filter": {
+                "include": {
+                    "name": "CommandParser."
+                }
+            }
+        },
+        {
+            "name": "commandparser-win-debug",
+            "displayName": "CommandParser - Windows Debug",
+            "inherits": [
+                "commandparser-base",
+                "win-debug"
+            ]
+        },
+        {
+            "name": "commandparser-win-release",
+            "displayName": "CommandParser - Windows Release",
+            "inherits": [
+                "commandparser-base",
+                "win-release"
+            ]
+        },
+        {
+            "name": "commandparser-linux-debug",
+            "displayName": "CommandParser - Linux Debug",
+            "inherits": [
+                "commandparser-base",
+                "linux-debug"
+            ]
+        },
+        {
+            "name": "commandparser-linux-release",
+            "displayName": "CommandParser - Linux Release",
+            "inherits": [
+                "commandparser-base",
+                "linux-release"
+            ]
+        },
+        {
+            "name": "commandparser-macos-debug",
+            "displayName": "CommandParser - macOS Debug",
+            "inherits": [
+                "commandparser-base",
+                "macos-debug"
+            ]
+        },
+        {
+            "name": "commandparser-macos-release",
+            "displayName": "CommandParser - macOS Release",
+            "inherits": [
+                "commandparser-base",
+                "macos-release"
+            ]
+        }
+    ]
+}
