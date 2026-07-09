@@ -6,20 +6,21 @@
 
 namespace CommandParser
 {
-    // TODO: [todo] Implement these stubs.
-
     bool IsCommandNodeChildOf(CommandNodeIndex commandNode, CommandNodeIndex parentNode, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
-        return {};
+        CommandNodeIndex actualParentNode = commandNodeParentArray[commandNode];
+        return parentNode == actualParentNode;
     }
 
     ParsedArgument ParseSingleCommandArgument(std::string_view token)
     {
+        // TODO: [todo] Implement this stub.
         return {};
     }
 
-    ParsedArguments ParseCommandArguments(std::span<const std::string_view> argumentTokens)
+    ParsedArguments ParseCommandArguments(std::span<const char* const> argumentTokens)
     {
+        // TODO: [todo] Implement this stub.
         return {};
     }
 }

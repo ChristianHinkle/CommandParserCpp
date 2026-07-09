@@ -11,4 +11,5 @@ set(FILES_CMAKE_RESULT
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParseFunctions.inl"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParsedCommand.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParsedArgument.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParsedArguments.h"
   )

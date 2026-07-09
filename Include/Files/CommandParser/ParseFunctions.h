@@ -9,6 +9,7 @@
 #include <string>
 #include <span>
 #include <CommandParser/ParsedArgument.h>
+#include <CommandParser/ParsedArguments.h>
 #include <CommandParser/ParsedCommand.h>
 
 namespace CommandParser
@@ -23,8 +24,8 @@ namespace CommandParser
 
     struct COMMANDPARSER_EXPORT ParsedCommandNodeIndex
     {
-        std::size_t result{InvalidCommandNodeIndex};
-        std::size_t numTokensParsed{0u};
+        std::size_t Result{InvalidCommandNodeIndex};
+        std::size_t NumTokensParsed{0u};
     };
 
     template <std::size_t maxCommandNodeNameCharLength>
@@ -32,14 +33,10 @@ namespace CommandParser
 
     COMMANDPARSER_EXPORT ParsedArgument ParseSingleCommandArgument(std::string_view token);
 
-    struct COMMANDPARSER_EXPORT ParsedArguments
-    {
-        std::unordered_map<std::string_view, std::string_view> namedArguments;
-        std::set<std::string_view> flagArguments;
-        std::vector<std::string_view> positionalArguments;
-    };
+    COMMANDPARSER_EXPORT ParsedArguments ParseCommandArguments(std::span<const char* const> argumentTokens);
 
-    COMMANDPARSER_EXPORT ParsedArguments ParseCommandArguments(std::span<const std::string_view> argumentTokens);
+    template <std::size_t maxCommandNodeNameCharLength>
+    ParsedCommand ParseCommandIgnoringTheProgramNameTokenIndex(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
 
     template <std::size_t maxCommandNodeNameCharLength>
     ParsedCommand ParseCommand(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);

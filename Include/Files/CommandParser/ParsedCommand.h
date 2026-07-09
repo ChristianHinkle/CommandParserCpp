@@ -13,9 +13,9 @@ namespace CommandParser
 {
     struct COMMANDPARSER_EXPORT ParsedCommand
     {
-        std::unordered_map<std::string_view, std::string_view> namedArguments;
-        std::set<std::string_view> flagArguments;
-        std::vector<std::string_view> positionalArguments;
-        CommandNodeIndex commandNodeIndex{InvalidCommandNodeIndex};
+        std::unordered_map<std::string_view, std::string_view> NamedArguments;
+        std::set<std::string_view> FlagArguments;
+        std::vector<std::string_view> PositionalArguments;
+        CommandNodeIndex CommandNodeIndex{InvalidCommandNodeIndex};
     };
 }
