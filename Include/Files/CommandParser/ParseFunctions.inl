@@ -13,14 +13,35 @@ namespace CommandParser
     template <std::size_t maxCommandNodeNameCharLength>
     std::string GetFullNameOfCommandNode(CommandNodeIndex commandNode, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
-        // TODO: [todo] Implement this stub.
-        return {};
+        std::string result;
+        AppendFullNameOfCommandNode(result,
+            commandNode,
+            commandNodeNameArray,
+            commandNodeParentArray);
+
+        return result;
     }
 
     template <std::size_t maxCommandNodeNameCharLength>
     void AppendFullNameOfCommandNode(std::string& string, CommandNodeIndex commandNode, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
-        // TODO: [todo] Implement this stub.
+        // Append parent node names first.
+        {
+            const CommandNodeIndex parentNodeIndex = commandNodeParentArray[commandNode];
+            if (parentNodeIndex != InvalidCommandNodeIndex)
+            {
+                AppendFullNameOfCommandNode(string,
+                    parentNodeIndex,
+                    commandNodeNameArray,
+                    commandNodeParentArray);
+
+                // Separate parent and child node names with a space.
+                string.push_back(' ');
+            }
+        }
+
+        // Append our own node name.
+        string.append(std::string_view{commandNodeNameArray[commandNode]});
     }
 
     template <std::size_t maxCommandNodeNameCharLength>
