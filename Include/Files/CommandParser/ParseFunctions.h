@@ -31,9 +31,9 @@ namespace CommandParser
     template <std::size_t maxCommandNodeNameCharLength>
     ParsedCommandNodeIndex ParseCommandNodeIndex(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
 
-    COMMANDPARSER_EXPORT ParsedArgument ParseSingleCommandArgument(std::string_view token);
-
     COMMANDPARSER_EXPORT ParsedArguments ParseCommandArguments(std::span<const char* const> argumentTokens);
+
+    COMMANDPARSER_EXPORT ParsedArgument ParseSingleCommandArgument(std::string_view token);
 
     template <std::size_t maxCommandNodeNameCharLength>
     ParsedCommand ParseCommandIgnoringTheProgramNameTokenIndex(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);

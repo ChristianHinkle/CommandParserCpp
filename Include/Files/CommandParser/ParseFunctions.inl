@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <CppUtils/Core/Algorithm.h>
+#include <utility>
 
 namespace CommandParser
 {
@@ -70,7 +71,6 @@ namespace CommandParser
         };
     }
 
-
     template <std::size_t maxCommandNodeNameCharLength>
     ParsedCommand ParseCommandIgnoringTheProgramNameTokenIndex(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
@@ -93,9 +93,9 @@ namespace CommandParser
         ParsedArguments parsedArguments = ParseCommandArguments(argumentTokens);
 
         return ParsedCommand{
-            .NamedArguments = parsedArguments.Named,
-            .FlagArguments = parsedArguments.Flags,
-            .PositionalArguments = parsedArguments.Positionals,
+            .NamedArguments = std::move(parsedArguments.Named),
+            .FlagArguments = std::move(parsedArguments.Flags),
+            .PositionalArguments = std::move(parsedArguments.Positionals),
             .CommandNodeIndex = parsedCommandNodeIndex.Result
         };
     }

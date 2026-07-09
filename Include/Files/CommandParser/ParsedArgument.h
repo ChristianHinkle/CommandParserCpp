@@ -18,14 +18,17 @@ namespace CommandParser
     {
         struct COMMANDPARSER_EXPORT Named
         {
+            std::pair<std::string_view, std::string_view> Value;
         };
 
         struct COMMANDPARSER_EXPORT Flag
         {
+            std::string_view Value;
         };
 
         struct COMMANDPARSER_EXPORT Positional
         {
+            std::string_view Value;
         };
     }
 
