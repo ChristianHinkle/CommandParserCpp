@@ -16,15 +16,15 @@ namespace CommandParser
 
     namespace ParsedArgumentTypes
     {
-        struct Named
+        struct COMMANDPARSER_EXPORT Named
         {
         };
 
-        struct Flag
+        struct COMMANDPARSER_EXPORT Flag
         {
         };
 
-        struct Positional
+        struct COMMANDPARSER_EXPORT Positional
         {
         };
     }

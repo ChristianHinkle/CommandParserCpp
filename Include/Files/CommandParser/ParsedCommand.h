@@ -11,7 +11,7 @@
 
 namespace CommandParser
 {
-    struct ParsedCommand
+    struct COMMANDPARSER_EXPORT ParsedCommand
     {
         std::unordered_map<std::string_view, std::string_view> namedArguments;
         std::set<std::string_view> flagArguments;
