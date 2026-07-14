@@ -10,8 +10,8 @@
 
 namespace CommandParser
 {
-    template <std::size_t maxCommandNodeNameCharLength>
-    std::string GetFullNameOfCommandNode(CommandNodeIndex commandNode, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
+    template <std::size_t commandNodeNameStructSize>
+    std::string GetFullNameOfCommandNode(CommandNodeIndex commandNode, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
         std::string result;
         AppendFullNameOfCommandNode(result,
@@ -22,8 +22,8 @@ namespace CommandParser
         return result;
     }
 
-    template <std::size_t maxCommandNodeNameCharLength>
-    void AppendFullNameOfCommandNode(std::string& string, CommandNodeIndex commandNode, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
+    template <std::size_t commandNodeNameStructSize>
+    void AppendFullNameOfCommandNode(std::string& string, CommandNodeIndex commandNode, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
         if (commandNode == InvalidCommandNodeIndex)
         {
@@ -47,25 +47,20 @@ namespace CommandParser
         }
 
         // Append our own node name.
-        string.append(std::string_view{commandNodeNameArray[commandNode]});
+        string.append(commandNodeNameArray[commandNode].Get());
     }
 
-    template <std::size_t maxCommandNodeNameCharLength>
-    ParsedCommandNodeIndex ParseCommandNodeIndex(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
+    template <std::size_t commandNodeNameStructSize>
+    ParsedCommandNodeIndex ParseCommandNodeIndex(std::span<const char* const> tokens, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
         CommandNodeIndex commandNodeIndex = InvalidCommandNodeIndex;
         std::size_t numTokensParsed = 0u;
 
-        for (const char* token : tokens)
+        for (const std::string_view token : tokens)
         {
             // TODO: [todo] Handle duplicate child command node names that have different parents.
             // Note: The `find_if` instead of `find` is necessary here so that we can ignore the extra chars after the null terminating character in the cstring.
-            CommandNodeIndex currentTokenCommandNodeIndex = CppUtils::index_find_if(commandNodeNameArray,
-                [token](const char commandNodeName[maxCommandNodeNameCharLength])
-                {
-                    return std::string_view{commandNodeName} == token;
-                }
-            );
+            CommandNodeIndex currentTokenCommandNodeIndex = CppUtils::index_find(commandNodeNameArray, token);
 
             if (currentTokenCommandNodeIndex == InvalidCommandNodeIndex)
             {
@@ -98,14 +93,14 @@ namespace CommandParser
         };
     }
 
-    template <std::size_t maxCommandNodeNameCharLength>
-    ParsedCommand ParseCommandIgnoringTheProgramNameTokenIndex(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
+    template <std::size_t commandNodeNameStructSize>
+    ParsedCommand ParseCommandIgnoringTheProgramNameTokenIndex(std::span<const char* const> tokens, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
         return ParseCommand(tokens.subspan(1u), commandNodeNameArray, commandNodeParentArray);
     }
 
-    template <std::size_t maxCommandNodeNameCharLength>
-    ParsedCommand ParseCommand(std::span<const char* const> tokens, std::span<const char[maxCommandNodeNameCharLength]> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
+    template <std::size_t commandNodeNameStructSize>
+    ParsedCommand ParseCommand(std::span<const char* const> tokens, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
         ParsedCommandNodeIndex parsedCommandNodeIndex = ParseCommandNodeIndex(tokens, commandNodeNameArray, commandNodeParentArray);
 

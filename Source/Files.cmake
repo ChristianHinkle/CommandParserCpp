@@ -6,4 +6,5 @@ set(FILES_CMAKE_RESULT
   "${my_project_name}_Export.cpp"
   "Utils.cpp"
   "ParseFunctions.cpp"
+  "FixedCapacityCstringConstant.cpp"
   )
