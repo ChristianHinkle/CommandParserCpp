@@ -5,13 +5,23 @@
 #include <cassert>
 #include <utility>
 #include <CppUtils/Core/OverloadedCallable.h>
+#include <cassert>
 
 namespace CommandParser
 {
-    bool IsCommandNodeChildOf(CommandNodeIndex commandNode, CommandNodeIndex parentNode, std::span<const CommandNodeIndex> commandNodeParentArray)
+    CommandNodeIndex GetParentCommandNode(CommandNodeIndex commandNodeIndex, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
-        CommandNodeIndex actualParentNode = commandNodeParentArray[commandNode];
-        return parentNode == actualParentNode;
+        // TODO: [todo] Provide a version of this function which does not perform this check, in case the caller knows for sure so that we can avoid this cost.
+        if (commandNodeIndex == InvalidCommandNodeIndex)
+        {
+            return InvalidCommandNodeIndex;
+        }
+
+        // Assert index validity within array bounds.
+        assert(commandNodeIndex >= 0u);
+        assert(commandNodeIndex < commandNodeParentArray.size());
+
+        return commandNodeParentArray[commandNodeIndex];
     }
 
     ParsedArguments ParseCommandArguments(std::span<const char* const> argumentTokens)

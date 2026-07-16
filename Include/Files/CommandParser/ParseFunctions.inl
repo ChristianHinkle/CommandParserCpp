@@ -8,6 +8,9 @@
 #include <CppUtils/Core/Algorithm.h>
 #include <utility>
 
+static_assert(CommandParser::InvalidCommandNodeIndex == static_cast<CommandParser::CommandNodeIndex>(-1), "Several places in our logic rely on the fact that this is true.");
+static_assert(CommandParser::InvalidCommandNodeIndex == CppUtils::npos, "Several places in our logic rely on the fact that this is true.");
+
 namespace CommandParser
 {
     template <std::size_t commandNodeNameStructSize>
@@ -51,6 +54,34 @@ namespace CommandParser
     }
 
     template <std::size_t commandNodeNameStructSize>
+    CommandNodeIndex FindCommandNodeByNameWithParent(std::string_view name, CommandNodeIndex parentNode, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
+    {
+        CommandNodeIndex currentCommandNodeIndex = InvalidCommandNodeIndex;
+
+        {
+            // Search through the name array until we find a match who's parent matches the caller's.
+            CommandNodeIndex currentSubspanIndex = CppUtils::index_find(commandNodeNameArray, name);
+            while (currentSubspanIndex != InvalidCommandNodeIndex)
+            {
+                // Note: This logic is a little bit confusing, but it makes sense and it works out. I wouldn't mind this being rewritten in some nicer way.
+                // Since the subspan index starts AFTER the previous subspan (subspan's last element plus one), we make sure to offset by one. This also works out
+                // for the first iteration, in which the current index is -1, so we happen to conveniently cancel that out with this plus one.
+                currentCommandNodeIndex += 1 + currentSubspanIndex;
+
+                if (GetParentCommandNode(currentCommandNodeIndex, commandNodeParentArray) == parentNode)
+                {
+                    return currentCommandNodeIndex;
+                }
+
+                // For the next iteration, search for the name AFTER this last one that we've left off on.
+                currentSubspanIndex = CppUtils::index_find(commandNodeNameArray.subspan(currentCommandNodeIndex + 1), name);
+            }
+        }
+
+        return currentCommandNodeIndex;
+    }
+
+    template <std::size_t commandNodeNameStructSize>
     ParsedCommandNodeIndex ParseCommandNodeIndex(std::span<const char* const> tokens, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray)
     {
         CommandNodeIndex commandNodeIndex = InvalidCommandNodeIndex;
@@ -58,24 +89,14 @@ namespace CommandParser
 
         for (const std::string_view token : tokens)
         {
-            // TODO: [todo] Handle duplicate child command node names that have different parents.
-            // Note: The `find_if` instead of `find` is necessary here so that we can ignore the extra chars after the null terminating character in the cstring.
-            CommandNodeIndex currentTokenCommandNodeIndex = CppUtils::index_find(commandNodeNameArray, token);
+            const CommandNodeIndex previousTokenCommandNodeIndex = commandNodeIndex;
+            const CommandNodeIndex currentTokenCommandNodeIndex =
+                FindCommandNodeByNameWithParent(token, previousTokenCommandNodeIndex, commandNodeNameArray, commandNodeParentArray);
 
             if (currentTokenCommandNodeIndex == InvalidCommandNodeIndex)
             {
-                // This token is not a command node.
+                // This combination of tokens are not a command node.
                 break;
-            }
-
-            CommandNodeIndex previousTokenCommandNodeIndex = commandNodeIndex;
-            if (previousTokenCommandNodeIndex != InvalidCommandNodeIndex)
-            {
-                if (!IsCommandNodeChildOf(currentTokenCommandNodeIndex, previousTokenCommandNodeIndex, commandNodeParentArray))
-                {
-                    // This token is not a child command node of the previous token.
-                    break;
-                }
             }
 
             ++numTokensParsed;

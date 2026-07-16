@@ -18,10 +18,14 @@ namespace CommandParser
     // TODO: [todo] Change these hard-coded-to-std-string functions with string stream instead or something.
     template <std::size_t commandNodeNameStructSize>
     std::string GetFullNameOfCommandNode(CommandNodeIndex commandNode, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
+
     template <std::size_t commandNodeNameStructSize>
     void AppendFullNameOfCommandNode(std::string& string, CommandNodeIndex commandNode, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
 
-    COMMANDPARSER_EXPORT bool IsCommandNodeChildOf(CommandNodeIndex commandNode, CommandNodeIndex parentNode, std::span<const CommandNodeIndex> commandNodeParentArray);
+    COMMANDPARSER_EXPORT CommandNodeIndex GetParentCommandNode(CommandNodeIndex commandNodeIndex, std::span<const CommandNodeIndex> commandNodeParentArray);
+
+    template <std::size_t commandNodeNameStructSize>
+    CommandNodeIndex FindCommandNodeByNameWithParent(std::string_view name, CommandNodeIndex parentNode, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
 
     struct COMMANDPARSER_EXPORT ParsedCommandNodeIndex
     {
