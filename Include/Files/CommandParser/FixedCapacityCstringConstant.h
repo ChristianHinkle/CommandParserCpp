@@ -29,7 +29,7 @@ namespace CommandParser
      *        Note: [cache] Keeping `StructSize` as a power of two is important to keep element access straightforward (via simple offsetting & bit shifting) for the CPU, and to prevent
      *        the cstrings from straddling multiple cache lines unnecessarily.
      *
-     *        Note: [cache] You might want to align your array with `alignas` and using the max number between `StructSize` and `64`, to help these structs fit nicely at the start of the cache lines.
+     *        Note: [cache] You might want to align your array with `alignas` and using the min number between `StructSize` and `64`, to help these structs fit nicely at the start of the cache lines.
      */
     template <std::size_t StructSize>
     struct FixedCapacityCstringConstant
