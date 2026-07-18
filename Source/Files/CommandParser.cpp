@@ -30,9 +30,9 @@ namespace CommandParser
         std::set<std::string_view> flags;
         std::vector<std::string_view> positionals;
 
-        for (const char* token : argumentTokens)
+        for (std::string_view token : argumentTokens)
         {
-            ParsedArgument commandArgumentVariant = ParseSingleCommandArgument(token);
+            ParsedArgumentVariant commandArgumentVariant = ParseSingleCommandArgument(token);
 
             std::visit(
                 CppUtils::OverloadedCallable{
@@ -60,7 +60,7 @@ namespace CommandParser
         };
     }
 
-    ParsedArgument ParseSingleCommandArgument(std::string_view token)
+    ParsedArgumentVariant ParseSingleCommandArgument(std::string_view token)
     {
         using namespace std::string_view_literals;
 

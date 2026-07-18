@@ -8,8 +8,8 @@
 #include <CppUtils/Core/Algorithm.h>
 #include <utility>
 
-static_assert(CommandParser::InvalidCommandNodeIndex == static_cast<CommandParser::CommandNodeIndex>(-1), "Several places in our logic rely on the fact that this is true.");
-static_assert(CommandParser::InvalidCommandNodeIndex == CppUtils::npos, "Several places in our logic rely on the fact that this is true.");
+static_assert(CommandParser::InvalidCommandNodeIndex == static_cast<CommandParser::CommandNodeIndex>(-1), "Several places in our logic rely on this fact.");
+static_assert(CommandParser::InvalidCommandNodeIndex == CppUtils::npos, "Several places in our logic rely on this fact.");
 
 namespace CommandParser
 {

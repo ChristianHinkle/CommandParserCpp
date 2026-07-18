@@ -12,8 +12,6 @@
 
 namespace CommandParser
 {
-    // TODO: [todo] Implement this variant of different argument types.
-
     namespace ParsedArgumentTypes
     {
         struct COMMANDPARSER_EXPORT Named
@@ -32,5 +30,5 @@ namespace CommandParser
         };
     }
 
-    using ParsedArgument = std::variant<ParsedArgumentTypes::Named, ParsedArgumentTypes::Flag, ParsedArgumentTypes::Positional>;
+    using ParsedArgumentVariant = std::variant<ParsedArgumentTypes::Named, ParsedArgumentTypes::Flag, ParsedArgumentTypes::Positional>;
 }

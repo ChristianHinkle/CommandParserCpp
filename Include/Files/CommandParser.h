@@ -8,7 +8,7 @@
 #include <string_view>
 #include <string>
 #include <span>
-#include <CommandParser/ParsedArgument.h>
+#include <CommandParser/ParsedArgumentVariant.h>
 #include <CommandParser/ParsedArguments.h>
 #include <CommandParser/ParsedCommand.h>
 #include <CommandParser/FixedCapacityCstringConstant.h>
@@ -38,7 +38,7 @@ namespace CommandParser
 
     COMMANDPARSER_EXPORT ParsedArguments ParseCommandArguments(std::span<const char* const> argumentTokens);
 
-    COMMANDPARSER_EXPORT ParsedArgument ParseSingleCommandArgument(std::string_view token);
+    COMMANDPARSER_EXPORT ParsedArgumentVariant ParseSingleCommandArgument(std::string_view token);
 
     template <std::size_t commandNodeNameStructSize>
     ParsedCommand ParseCommandIgnoringTheProgramNameTokenIndex(std::span<const char* const> tokens, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
