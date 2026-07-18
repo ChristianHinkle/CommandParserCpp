@@ -5,10 +5,10 @@ set(FILES_CMAKE_RESULT
   # List out all our include files.
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name}_Export.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name}_include_export.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name}.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name}.inl"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/Utils.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/Utils.inl"
-  "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParseFunctions.h"
-  "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParseFunctions.inl"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParsedCommand.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParsedArgument.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/Files/${my_project_name_path_format}/ParsedArguments.h"

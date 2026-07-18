@@ -1,6 +1,6 @@
 // Copyright (c) 2023-2025 Christian Hinkle, Brian Hinkle.
 
-#include <CommandParser/ParseFunctions.h>
+#include <CommandParser.h>
 
 #include <cassert>
 #include <utility>

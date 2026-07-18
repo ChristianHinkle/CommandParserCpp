@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <CommandParser/ParseFunctions.h>
+#include <CommandParser.h>
 
 #include <cassert>
 #include <CppUtils/Core/Algorithm.h>

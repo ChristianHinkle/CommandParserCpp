@@ -47,4 +47,4 @@ namespace CommandParser
     ParsedCommand ParseCommand(std::span<const char* const> tokens, std::span<const FixedCapacityCstringConstant<commandNodeNameStructSize>> commandNodeNameArray, std::span<const CommandNodeIndex> commandNodeParentArray);
 }
 
-#include <CommandParser/ParseFunctions.inl>
+#include <CommandParser.inl>
