@@ -15,7 +15,21 @@ namespace CommandParser
     /**
      * @brief A struct that stores a cstring in a char buffer, and stores its length as well. This struct is as
      *        lightweight as if it were a raw char buffer (has the same default alignment). Intended to be used in static
-     *        storage (e.g., global variables).
+     *        storage (e.g., global variables). Use this struct to make contiguous array of cstrings in static storage.
+     *
+     *        Note: [cache] An array of string views sounds nice obviously, but what we have here is the best for our use case, for a few reasons:
+     *        1. We would have all our cstrings stored side-by-side in the same area of static storage, since it would be a 2D character array.
+     *            - Side note: It's also nice that we have the strings spaced by a consistent alignment of `StructSize`, which helps the CPU by making
+     *              predictable for the prefetcher and possibly the branch predictor as well for certain logic.
+     *        2. Accessing these cstrings is a simple memory offset. If we instead used string views, then that would be an array of pointers (and lengths), which would
+     *           require the CPU to use those pointers to jump to a completely different area of static storage, where the string literal is located.
+     *        3. Another negligible benefit is also the space we're occupying in memory. A 2D array of characters is storing only the characters themselves, with offsets known at compile
+     *           time, whereas an array of `std::string_view`s would be actually storing pointers (and lengths) to the cstring literals, which would be taking up additional space.
+     *
+     *        Note: [cache] Keeping `StructSize` as a power of two is important to keep element access straightforward (via simple offsetting & bit shifting) for the CPU, and to prevent
+     *        the cstrings from straddling multiple cache lines unnecessarily.
+     *
+     *        Note: [cache] You might want to align your array with `alignas` and using the max number between `StructSize` and `64`, to help these structs fit nicely at the start of the cache lines.
      */
     template <std::size_t StructSize>
     struct FixedCapacityCstringConstant
